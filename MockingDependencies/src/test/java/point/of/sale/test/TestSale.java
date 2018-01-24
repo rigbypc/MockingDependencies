@@ -11,20 +11,24 @@ public class TestSale {
 
 	@Test
 	public void testMockStorage() {
-		FakeDisplay fakeDisplay = new FakeDisplay();
+		Display mockDisplay = mock(Display.class);
+				
 		//create the mock of Storage
 		Storage mockStorage = mock(Storage.class);
 		//stub barcode("123") to return Milk, 3.99
 		when(mockStorage.barcode("123")).thenReturn("Milk, 3.99");
 		
 		//call the class under test
-		Sale sale = new Sale(fakeDisplay, mockStorage);
+		Sale sale = new Sale(mockDisplay, mockStorage);
 		//internally this will use the mock object
 		sale.scan("123");
-		//assert what was displayed
-		assertEquals("Milk, 3.99", fakeDisplay.getLastLine());
 		
-		//verify that barcode was called by the sale object
+		//verify display was called with "123"
+		verify(mockDisplay).showLine("123");
+		//verify display.showLine called with Milk, 3.99
+		verify(mockDisplay).showLine("Milk, 3.99");
+		
+		//verify that Storage.barcode was called by the sale object
 		verify(mockStorage).barcode("123");
 		
 	}
