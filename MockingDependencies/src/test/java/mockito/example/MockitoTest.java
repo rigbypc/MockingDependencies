@@ -1,4 +1,4 @@
-package point.of.sale.test;
+package mockito.example;
 
 import static org.junit.Assert.*;
 
