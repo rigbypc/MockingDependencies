@@ -18,10 +18,21 @@ public class MockitoExamples {
 		
 		mockList.add("Hello world");
 		verify(mockList).add("Hello world");
+		
+		//setup for use
+		when(mockList.get(0)).thenReturn("Hello world");
+		
+		//actual
+		mockList.get(0);
+		
+		//verifing the use
+		verify(mockList).get(0);
+		
+		
+		
 		System.out.println(mockList.get(0));
 	}
 	
-	@Test
 	public void testLinkedList() {
 		LinkedList<String> list = new LinkedList<String>();
 		
