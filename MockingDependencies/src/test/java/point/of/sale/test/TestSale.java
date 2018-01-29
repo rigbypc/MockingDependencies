@@ -12,7 +12,86 @@ import static org.mockito.Mockito.*;
 public class TestSale {
 
 	@Test
-	public void testMockStorage() {
+	public void testSimpleMockStorage() {
+		//create the mock Display
+		Display mockDisplay = mock(Display.class);
+
+		//create the mock of Storage
+		Storage mockStorage = mock(Storage.class);
+		//stub it
+		when(mockStorage.barcode("123")).thenReturn("Milk, 3.99");
+
+		//call the class under test
+		Sale sale = new Sale(mockDisplay, mockStorage);
+		//internally this will use the mock object
+		sale.scan("123");
+		
+		//verify that Storage.barcode was called by the sale object
+		verify(mockStorage).barcode("123");
+		
+		//verify that we displayed the barcode
+		verify(mockDisplay).showLine("123");
+		//verify display.showLine called with Milk, 3.99
+		verify(mockDisplay).showLine("Milk, 3.99");
+	}
+	
+	@Test
+	public void testInOrder() {
+		//create the mock Display
+		Display mockDisplay = mock(Display.class);
+
+		//create the mock of Storage
+		Storage mockStorage = mock(Storage.class);
+		//stub it
+		when(mockStorage.barcode("123")).thenReturn("Milk, 3.99");
+
+		//Setup an InOnder
+		InOrder inOrder = inOrder(mockDisplay, mockStorage);
+		
+		//call the class under test
+		Sale sale = new Sale(mockDisplay, mockStorage);
+		//internally this will use the mock object
+		sale.scan("123");
+		
+		//verify that we displayed the barcode
+		inOrder.verify(mockDisplay).showLine("123");
+		
+		//verify that Storage.barcode was called by the sale object
+		inOrder.verify(mockStorage).barcode("123");
+		
+		//verify display.showLine called with Milk, 3.99
+		inOrder.verify(mockDisplay).showLine("Milk, 3.99");
+	}
+	
+	@Test
+	public void testCaptorMockStorage() {
+		//create the mock Display
+		Display mockDisplay = mock(Display.class);
+
+		//create the mock of Storage
+		Storage mockStorage = mock(Storage.class);
+		//stub it
+		when(mockStorage.barcode("123")).thenReturn("Milk, 3.99");
+
+		//capture a String argument, which will be passed to Storage.barcode(<here>)
+		ArgumentCaptor<String> argCaptor = ArgumentCaptor.forClass(String.class);
+				
+		//call the class under test
+		Sale sale = new Sale(mockDisplay, mockStorage);
+		//internally this will use the mock object
+		sale.scan("123");
+		
+		//verify, verifies interactions, but also can record the args passed in
+		verify(mockStorage).barcode(argCaptor.capture());
+		//used the captured arg to ensure that it gets displayed
+		verify(mockDisplay).showLine(argCaptor.getValue());
+		
+		//verify display.showLine called with Milk, 3.99
+		verify(mockDisplay).showLine("Milk, 3.99");
+	}
+	
+	@Test
+	public void testEverythingMockStorage() {
 		//create the mock Display
 		Display mockDisplay = mock(Display.class);
 				
@@ -38,16 +117,17 @@ public class TestSale {
 		System.out.println(argCaptor.getValue());
 		
 		//verify display was called with "123"
+		//verify(mockDisplay).showLine("123");
 		verify(mockDisplay).showLine(argCaptor.getValue());
 		
 		//verify display.showLine called with Milk, 3.99
 		verify(mockDisplay).showLine("Milk, 3.99");
 		
-		sale.scan("124");
-		
 		//verify that Storage.barcode was called by the sale object
 		verify(mockStorage).barcode("123");
+				
 		
+		sale.scan("124");
 		inOrder.verify(mockStorage).barcode("124");
 		inOrder.verify(mockDisplay).showLine("Eggs, 4.99");
 		
@@ -76,9 +156,6 @@ public class TestSale {
 		
 		sale.scan("2");
 		assertEquals("Smokes, 10.99", fakeDisplay.getLastLine());
-		
-		
-		
 		
 	}
 
