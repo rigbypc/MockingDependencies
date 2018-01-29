@@ -33,12 +33,26 @@ public class MockitoExamples {
 		System.out.println(mockList.get(0));
 	}
 	
-	public void testLinkedList() {
+	@Test
+	public void testSpyLinkedList() {
+		//real list
 		LinkedList<String> list = new LinkedList<String>();
+		//mock list
+		LinkedList<String> spyList = spy(list);
+		
+		//stub
+		when(spyList.size()).thenReturn(100);
 		
 		System.out.println("Real List");
-		list.add("Hello world");
-		System.out.println(list.get(0));
+		
+		//real
+		spyList.add("Hello world");
+		System.out.println(spyList.get(0));
+		
+		//stub
+		System.out.println(spyList.size());
+		//assert, we call the mock, which always returns a size of 100
+		assertEquals(100, spyList.size());
 	}
 
 }
