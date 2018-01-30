@@ -9,7 +9,7 @@ import org.mockito.InOrder;
 import point.of.sale.*;
 import static org.mockito.Mockito.*;
 
-public class TestSale {
+public class TestBarcodeSale {
 
 	@Test
 	public void testSimpleMockStorage() {
