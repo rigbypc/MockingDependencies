@@ -14,6 +14,47 @@ import java.util.ArrayList;
 public class TestBarcodeSale {
 
 	@Test
+	public void testSupersedeInterac() {
+		//create the mock Interac
+		Interac mockInterac = mock(Interac.class);
+		
+		//create the mock Display
+		Display mockDisplay = mock(Display.class);
+
+		//create the mock of Storage
+		Storage mockStorage = mock(Storage.class);
+		//stub it
+		when(mockStorage.barcode("123")).thenReturn("Milk, 3.99");
+
+		//create the class under test 
+		// a real interac connection
+		Sale sale = new Sale(mockDisplay, mockStorage);
+		
+		sale.supersedeInterac(mockInterac);
+		
+		//internally this will use the mock object
+		sale.scan("123");
+		sale.completePurchase();
+		
+		//verify that Storage.barcode was called by the sale object
+		verify(mockStorage).barcode("123");
+		
+		//verify that we displayed the barcode
+		verify(mockDisplay).showLine("123");
+		//verify display.showLine called with Milk, 3.99
+		verify(mockDisplay).showLine("Milk, 3.99");
+		
+		//verify without checking the contents of the list
+		verify(mockInterac).pay(any(ArrayList.class));
+		
+		//verify the call to Interact for "Milk, 3.99"
+		ArrayList<String> items = new ArrayList<>();
+		items.add("Milk, 3.99");		
+		verify(mockInterac).pay(items);
+		
+	}
+	
+	@Test
 	public void testSimpleMockStorage() {
 		//create the mock Interac
 		Interac mockInterac = mock(Interac.class);

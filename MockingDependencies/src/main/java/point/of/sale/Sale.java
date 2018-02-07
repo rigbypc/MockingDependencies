@@ -33,5 +33,9 @@ public class Sale {
 		items.add(item);
 		
 	}
+	
+	public void supersedeInterac(Interac newInterac) {
+		interac = newInterac;
+	}
 
 }
