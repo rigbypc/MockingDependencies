@@ -34,6 +34,8 @@ public class Sale {
 		
 	}
 	
+	//allows us to replace the private interac object dependency with a mock
+	//should never be used in production TESTING ONLY
 	public void supersedeInterac(Interac newInterac) {
 		interac = newInterac;
 	}
