@@ -25,6 +25,7 @@ public class TestBarcodeSale {
 		Sale sale = new Sale(mockDisplay, mockStorage);
 		//internally this will use the mock object
 		sale.scan("123");
+		sale.completePurchase();
 		
 		//verify that Storage.barcode was called by the sale object
 		verify(mockStorage).barcode("123");
@@ -34,7 +35,7 @@ public class TestBarcodeSale {
 		//verify display.showLine called with Milk, 3.99
 		verify(mockDisplay).showLine("Milk, 3.99");
 		
-		sale.completePurchase();
+		
 	}
 	
 	@Test
