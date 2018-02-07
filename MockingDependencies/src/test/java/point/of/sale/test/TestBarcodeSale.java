@@ -33,6 +33,8 @@ public class TestBarcodeSale {
 		verify(mockDisplay).showLine("123");
 		//verify display.showLine called with Milk, 3.99
 		verify(mockDisplay).showLine("Milk, 3.99");
+		
+		sale.completePurchase();
 	}
 	
 	@Test
