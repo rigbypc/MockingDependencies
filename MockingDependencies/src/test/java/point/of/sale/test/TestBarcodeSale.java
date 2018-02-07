@@ -75,6 +75,9 @@ public class TestBarcodeSale {
 		sale.scan("123");
 		sale.completePurchase();
 		
+		//verify that the store name is being displayed
+		verify(mockDisplay).showLine("No Name");
+		
 		//verify that Storage.barcode was called by the sale object
 		verify(mockStorage).barcode("123");
 		
