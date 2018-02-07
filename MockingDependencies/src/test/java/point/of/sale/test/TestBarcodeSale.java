@@ -9,10 +9,15 @@ import org.mockito.InOrder;
 import point.of.sale.*;
 import static org.mockito.Mockito.*;
 
+import java.util.ArrayList;
+
 public class TestBarcodeSale {
 
 	@Test
 	public void testSimpleMockStorage() {
+		//create the mock Interac
+		Interac mockInterac = mock(Interac.class);
+		
 		//create the mock Display
 		Display mockDisplay = mock(Display.class);
 
@@ -21,9 +26,11 @@ public class TestBarcodeSale {
 		//stub it
 		when(mockStorage.barcode("123")).thenReturn("Milk, 3.99");
 
-		//call the class under test
-		Sale sale = new Sale(mockDisplay, mockStorage);
+		//create the class under test 
+		//Add the mockInterac
+		Sale sale = new Sale(mockDisplay, mockStorage, mockInterac);
 		//internally this will use the mock object
+		
 		sale.scan("123");
 		sale.completePurchase();
 		
@@ -35,6 +42,13 @@ public class TestBarcodeSale {
 		//verify display.showLine called with Milk, 3.99
 		verify(mockDisplay).showLine("Milk, 3.99");
 		
+		//verify without checking the contents of the list
+		verify(mockInterac).pay(any(ArrayList.class));
+		
+		//verify the call to Interact for "Milk, 3.99"
+		ArrayList<String> items = new ArrayList<>();
+		items.add("Milk, 3.99");		
+		verify(mockInterac).pay(items);
 		
 	}
 	

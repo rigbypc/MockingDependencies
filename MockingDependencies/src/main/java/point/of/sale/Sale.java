@@ -10,9 +10,13 @@ public class Sale {
 	ArrayList<String> items = new ArrayList<>();
 	
 	public Sale(Display display, Storage storage) {
+		this(display, storage, new Interac(12));
+	}
+	
+	public Sale(Display display, Storage storage, Interac interac) {
 		this.display = display;
 		this.storage = storage;
-		this.interac = new Interac(12);
+		this.interac = interac;
 	}
 	
 	public void completePurchase() {
