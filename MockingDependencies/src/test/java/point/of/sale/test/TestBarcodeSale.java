@@ -56,6 +56,7 @@ public class TestBarcodeSale {
 	
 	@Test
 	public void testSetStoreName() {
+		StoreInfo.reset();
 		StoreInfo storeInfo = StoreInfo.getInstance();
 		storeInfo.setName("Concordia");
 		assertEquals("Concordia", storeInfo.getName());
@@ -63,6 +64,8 @@ public class TestBarcodeSale {
 	
 	@Test
 	public void testSimpleMockStorage() {
+		StoreInfo.reset();
+		
 		//create the mock Interac
 		Interac mockInterac = mock(Interac.class);
 		

@@ -24,4 +24,11 @@ public class StoreInfo {
 	public void setName(String storeName) {
 		this.storeName = storeName;
 	}
+	
+	//For testing purposes only! 
+	// Decouples tests that are dependent on a singleton
+	public static void reset() {
+		instance = new StoreInfo();
+	}
+	
 }
