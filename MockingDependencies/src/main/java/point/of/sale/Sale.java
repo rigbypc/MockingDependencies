@@ -17,6 +17,7 @@ public class Sale {
 		this.display = display;
 		this.storage = storage;
 		this.interac = interac;
+		//display the storename when you start a sale
 		display.showLine(StoreInfo.getInstance().getName());
 	}
 	

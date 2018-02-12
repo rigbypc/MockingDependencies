@@ -5,6 +5,7 @@ public class StoreInfo {
 	private static StoreInfo instance = null;
 	private String storeName = "No Name";
 	
+	//private constructor so no outside class can make an instance
 	private StoreInfo() {
 		
 	}
