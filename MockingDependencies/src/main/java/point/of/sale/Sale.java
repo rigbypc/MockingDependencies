@@ -18,7 +18,6 @@ public class Sale {
 		this(display, storage, new Interac(12));
 	}
 	
-	@Inject
 	public Sale(Display display, Storage storage, Interac interac) {
 		this.display = display;
 		this.storage = storage;

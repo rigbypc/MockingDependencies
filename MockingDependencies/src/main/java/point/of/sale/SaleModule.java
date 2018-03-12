@@ -7,8 +7,12 @@ public class SaleModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		bind(Display.class).to(ConsoleDisplay.class);
+		
 		bind(Interac.class).toInstance(new Interac(12));
-		bind(Storage.class).to(HashStorage.class);
+		
+		HashStorage hashStorage = new HashStorage();
+		hashStorage.put("123", "Milk 3.99");
+		bind(Storage.class).toInstance(hashStorage);
 
 	}
 
