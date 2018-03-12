@@ -2,10 +2,15 @@ package point.of.sale;
 
 import java.util.ArrayList;
 
+import com.google.inject.Inject;
+
 public class Sale {
 
+	@Inject
 	Storage storage;
+	@Inject
 	Display display;
+	@Inject
 	Interac interac;
 	ArrayList<String> items = new ArrayList<>();
 	
@@ -13,6 +18,7 @@ public class Sale {
 		this(display, storage, new Interac(12));
 	}
 	
+	@Inject
 	public Sale(Display display, Storage storage, Interac interac) {
 		this.display = display;
 		this.storage = storage;
