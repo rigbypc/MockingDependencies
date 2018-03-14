@@ -17,6 +17,7 @@ public class SaleModule extends AbstractModule {
 		String filename = System.getProperty("user.dir") + "/" + "SaleStorage.ser";
 		hashStorage.persistStorage(filename);
 		hashStorage.loadStorage(filename);
+		hashStorage.put("125", "Eggs .50");
 		bind(Storage.class).toInstance(hashStorage);
 
 	}
