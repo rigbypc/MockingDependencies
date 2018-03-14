@@ -8,7 +8,7 @@ public class ConsoleDisplay implements Display {
 
 	@Override
 	public void showLine(String line) {
-		System.out.println(line);
+		System.out.println("Console: " + line);
 
 	}
 

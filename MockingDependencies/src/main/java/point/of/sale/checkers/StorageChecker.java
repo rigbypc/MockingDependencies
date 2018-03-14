@@ -17,6 +17,10 @@ public class StorageChecker {
 	
 	//goal is to check that each item remains consistent
 	//for example "123" maps to "Milk 3.99"
+	public void check() {
+		System.out.println("check");
+		System.out.println(storage.barcode("123"));
+	}
 	
 	
 

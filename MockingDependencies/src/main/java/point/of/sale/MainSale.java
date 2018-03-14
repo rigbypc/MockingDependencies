@@ -11,6 +11,7 @@ public class MainSale {
 		Injector injector = Guice.createInjector(new SaleModule());
 		Sale sale = injector.getInstance(Sale.class);
 		StorageChecker storageChecker = injector.getInstance(StorageChecker.class);
+		storageChecker.check();
 		
 		sale.scan("123");
 
