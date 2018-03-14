@@ -29,7 +29,7 @@ public class TestHash {
 	public void givenFile_whenChecksumUsingGuava_thenVerifying() 
 	  throws IOException {
 	    String filename = System.getProperty("user.dir") + "/" + "SaleStorage.ser";
-	    String checksum = "B5D6FD3A5475E8CAFCCB0E098E86426326BDC30DAE001DE7EFC8CCCB8463D4C6";
+	    String checksum = "460EC32FDC0A09B5814E18FCF92421FC361CE7C9617415A1D55BA60428BD3473";
 	         
 	    HashCode hash = com.google.common.io.Files.
 	    					asByteSource(new File(filename)).hash(Hashing.sha256());
