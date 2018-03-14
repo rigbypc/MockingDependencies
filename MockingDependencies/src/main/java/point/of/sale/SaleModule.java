@@ -12,6 +12,11 @@ public class SaleModule extends AbstractModule {
 		
 		HashStorage hashStorage = new HashStorage();
 		hashStorage.put("123", "Milk 3.99");
+		hashStorage.put("124", "Beer 10.00");
+		hashStorage.put("125", "Eggs 2.99");
+		String filename = System.getProperty("user.dir") + "/" + "SaleStorage.ser";
+		hashStorage.persistStorage(filename);
+		hashStorage.loadStorage(filename);
 		bind(Storage.class).toInstance(hashStorage);
 
 	}
