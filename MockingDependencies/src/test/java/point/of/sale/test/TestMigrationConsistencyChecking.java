@@ -47,12 +47,14 @@ public class TestMigrationConsistencyChecking {
 		assertEquals(0, arrayStorage.checkConsistency());
 		
 		//ensure that inconsistencies are fixed, ie new.put(old)
-		arrayStorage.put("2", "chug beer in class, priceless");
+		arrayStorage.testOnlyPutHashOnly("2", "chug beer in class, priceless");
 		assertEquals(1, arrayStorage.checkConsistency());
 		assertEquals(0, arrayStorage.checkConsistency());
 		
 		//shadow writes: any changes are written directly to old
 		//consistency should be checked after each write
+		arrayStorage.put("3", "phone 1000.99");
+		assertEquals(0, arrayStorage.checkConsistency());
 		
 		//Shadow Reads for Validation (read will access both old and new)
 		// old will provide response

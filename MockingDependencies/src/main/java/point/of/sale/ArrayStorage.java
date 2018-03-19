@@ -20,10 +20,17 @@ public class ArrayStorage extends HashStorage {
 		super.loadStorage(filename);
 	}
 
+	//need this for testing to insert inconsistencies
+	public void testOnlyPutHashOnly(String barcode, String item) {
+		super.put(barcode, item);
+	}
+	
 	@Override
 	public void put(String barcode, String item) {
-		// TODO Auto-generated method stub
+		//actual write to old data store
 		super.put(barcode, item);
+		//shadow write
+		array[Integer.parseInt(barcode)] = item;
 	}
 
 	@Override
