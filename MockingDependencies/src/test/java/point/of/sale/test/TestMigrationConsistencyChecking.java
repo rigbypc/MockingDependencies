@@ -21,18 +21,18 @@ public class TestMigrationConsistencyChecking {
 	@Mock
 	Display mockDisplay;
 	
-	HashStorage hashStorage;
+	ArrayStorage arrayStorage;
 	
 	Sale sale;
 	
 	@Before
 	public void setupSale() {
-		hashStorage = new HashStorage();
-		hashStorage.put("123", "Milk 3.99");
-		hashStorage.put("124", "Beer 10.00");
-		hashStorage.put("125", "Eggs 2.99");
+		arrayStorage = new ArrayStorage();
+		arrayStorage.put("123", "Milk 3.99");
+		arrayStorage.put("124", "Beer 10.00");
+		arrayStorage.put("125", "Eggs 2.99");
 		
-		sale = new Sale(mockDisplay, hashStorage, mockInterac);
+		sale = new Sale(mockDisplay, arrayStorage, mockInterac);
 	}
 	
 	@Test
