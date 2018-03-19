@@ -21,6 +21,8 @@ public class TestMigrationConsistencyChecking {
 	@Mock
 	Display mockDisplay;
 	
+	//We want the new storage to behave in exactly the same way
+	//Create a new ArrayStorage that implements HashStorage	
 	ArrayStorage arrayStorage;
 	
 	Sale sale;
@@ -37,15 +39,9 @@ public class TestMigrationConsistencyChecking {
 	
 	@Test
 	public void test() {
-		//simple test of storage
-		sale.scan("123");	
-		verify(mockDisplay).showLine("123");
-		verify(mockDisplay).showLine("Milk 3.99");
-		
-		//We want the new storage to behave in exactly the same way
-		//Create a new ArrayStorage that implements HashStorage
-
+				
 		//forklift, copy old to new
+		arrayStorage.forklift();
 		
 		//check consistency of new with old
 		
@@ -61,6 +57,12 @@ public class TestMigrationConsistencyChecking {
 		//read and write from new datastore
 		
 		//toggle over to new datastore only
+		
+		//simple test of storage
+		sale.scan("123");	
+		verify(mockDisplay).showLine("123");
+		verify(mockDisplay).showLine("Milk 3.99");
+				
 	}
 
 }
