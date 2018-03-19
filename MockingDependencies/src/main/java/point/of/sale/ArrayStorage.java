@@ -38,4 +38,25 @@ public class ArrayStorage extends HashStorage {
 		super.persistStorage(filename);
 	}
 
+	//new should be the same as the old
+	public int checkConsistency() {
+		int inconsistencies = 0;
+		for (String barcode : hashMap.keySet()) {
+			String expected = hashMap.get(barcode);
+			String actual = array[Integer.parseInt(barcode)];
+			if (!expected.equals(actual)) {
+				inconsistencies++;
+				violation(barcode, expected, actual);		
+			}
+		}
+		return inconsistencies;
+	}
+	
+	private void violation(String barcode, String expected, String actual) {
+		System.out.println("Consistency Violation!\n" + 
+				"barcode = " + barcode +
+				"\n\t expected = " + expected
+				+ "\n\t actual = " + actual);
+	}
+
 }

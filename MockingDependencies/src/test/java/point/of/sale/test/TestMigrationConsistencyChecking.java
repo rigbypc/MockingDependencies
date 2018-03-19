@@ -44,6 +44,7 @@ public class TestMigrationConsistencyChecking {
 		arrayStorage.forklift();
 		
 		//check consistency of new with old
+		assertEquals(0, arrayStorage.checkConsistency());
 		
 		//ensure that inconsistencies are fixed, ie new.put(old)
 		
