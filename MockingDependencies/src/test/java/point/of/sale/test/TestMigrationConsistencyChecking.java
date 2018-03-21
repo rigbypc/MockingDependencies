@@ -29,6 +29,10 @@ public class TestMigrationConsistencyChecking {
 	
 	@Before
 	public void setupSale() {
+		SaleToggles.isEnabledArray = true;
+		SaleToggles.isEnabledHash = true;
+		SaleToggles.isUnderTest = true;
+		
 		arrayStorage = new ArrayStorage();
 		arrayStorage.put("123", "Milk 3.99");
 		arrayStorage.put("124", "Beer 10.00");

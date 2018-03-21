@@ -10,10 +10,16 @@ public class ArrayStorage extends HashStorage {
 	int size = 999;
 	String[] array;
 	public ArrayStorage() {
-		array = new String[size];
+		if (SaleToggles.isEnabledArray) {
+			array = new String[size];
+		}
 	}
 	
 	public void forklift() {
+		if(!(SaleToggles.isEnabledArray & SaleToggles.isEnabledHash)) {
+			return;
+		}
+		
 		for (String barcode : hashMap.keySet()) {
 			array[Integer.parseInt(barcode)] = hashMap.get(barcode);
 		}
@@ -21,49 +27,80 @@ public class ArrayStorage extends HashStorage {
 	
 	@Override
 	public void loadStorage(String filename) {
-		// TODO Auto-generated method stub
-		super.loadStorage(filename);
+		if (SaleToggles.isEnabledHash) {
+			super.loadStorage(filename);
+		}
 	}
 
 	//need this for testing to insert inconsistencies
 	public void testOnlyPutHashOnly(String barcode, String item) {
-		super.put(barcode, item);
+		if (!SaleToggles.isUnderTest) {
+			return;
+		}
+		
+		if (SaleToggles.isEnabledHash) {
+			super.put(barcode, item);
+		}
 	}
 	
 	@Override
 	public void put(String barcode, String item) {
-		//actual write to old data store
-		super.put(barcode, item);
-		//shadow write
-		array[Integer.parseInt(barcode)] = item;
+		if (SaleToggles.isEnabledArray) {
+			//shadow write
+			array[Integer.parseInt(barcode)] = item;
+		}
+		
+		if (SaleToggles.isEnabledHash) {
+			//actual write to old data store
+			super.put(barcode, item);
+		}
+		
+		return;
+		
 	}
 
 	@Override
 	public String barcode(String barcode) {
-		String expected = hashMap.get(barcode);
-		//shadow read
-		String actual = array[Integer.parseInt(barcode)];
 		
-		if(! expected.equals(actual)) {
-			readInconsistencies ++;
-			//fix the inconsistency
-			array[Integer.parseInt(barcode)] = expected;
-			violation(barcode, expected, actual);
+		if (SaleToggles.isEnabledArray & SaleToggles.isEnabledHash) {
+			String expected = hashMap.get(barcode);
+			//shadow read
+			String actual = array[Integer.parseInt(barcode)];
+			
+			if(! expected.equals(actual)) {
+				readInconsistencies ++;
+				//fix the inconsistency
+				array[Integer.parseInt(barcode)] = expected;
+				violation(barcode, expected, actual);
+			}
 		}
 				
-		//return the expected value from the hash
-		return super.barcode(barcode);
+		if (SaleToggles.isEnabledHash) {
+			//return the expected value from the hash
+			return super.barcode(barcode);
+		}
+		
+		if (SaleToggles.isEnabledArray) {
+			return array[Integer.parseInt(barcode)];
+		}
+		
+		return null;
 	}
 
 	@Override
 	public void persistStorage(String filename) {
-		// TODO Auto-generated method stub
-		super.persistStorage(filename);
+		if (SaleToggles.isEnabledHash) {
+			super.persistStorage(filename);
+		}
 	}
 
 	
 	//new should be the same as the old
 	public int checkConsistency() {
+		if(! (SaleToggles.isEnabledHash & SaleToggles.isEnabledArray)) {
+			return 0;
+		}
+		
 		int inconsistencies = 0;
 		for (String barcode : hashMap.keySet()) {
 			String expected = hashMap.get(barcode);
@@ -80,6 +117,10 @@ public class ArrayStorage extends HashStorage {
 	}
 	
 	private void violation(String barcode, String expected, String actual) {
+		if(! (SaleToggles.isEnabledHash & SaleToggles.isEnabledArray)) {
+			return;
+		}
+
 		System.out.println("Consistency Violation!\n" + 
 				"barcode = " + barcode +
 				"\n\t expected = " + expected
