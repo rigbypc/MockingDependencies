@@ -29,9 +29,9 @@ public class TestMigrationConsistencyChecking {
 	
 	@Before
 	public void setupSale() {
+		SaleToggles.isEnabledHash = false;
 		SaleToggles.isEnabledArray = true;
-		SaleToggles.isEnabledHash = true;
-		SaleToggles.isUnderTest = true;
+		SaleToggles.isUnderTest = false;
 		
 		arrayStorage = new ArrayStorage();
 		arrayStorage.put("123", "Milk 3.99");
@@ -43,7 +43,20 @@ public class TestMigrationConsistencyChecking {
 	
 	@Test
 	public void test() {
-				
+		//simple test of storage
+		sale.scan("123");	
+		verify(mockDisplay).showLine("123");
+		verify(mockDisplay).showLine("Milk 3.99");
+	}
+	
+	//only makes sense if we are doing consistency checking
+	@Test
+	public void testMigrationConsistency() {
+	
+		if (! (SaleToggles.isEnabledArray & SaleToggles.isEnabledHash)) {
+			return;
+		}
+		
 		//forklift, copy old to new
 		arrayStorage.forklift();
 		
