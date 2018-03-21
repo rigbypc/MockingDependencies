@@ -2,6 +2,11 @@ package point.of.sale;
 
 public class ArrayStorage extends HashStorage {
 
+	int readInconsistencies = 0;
+	public int getReadInconsistencies() {
+		return readInconsistencies;
+	}
+
 	int size = 999;
 	String[] array;
 	public ArrayStorage() {
@@ -35,7 +40,18 @@ public class ArrayStorage extends HashStorage {
 
 	@Override
 	public String barcode(String barcode) {
-		// TODO Auto-generated method stub
+		String expected = hashMap.get(barcode);
+		//shadow read
+		String actual = array[Integer.parseInt(barcode)];
+		
+		if(! expected.equals(actual)) {
+			readInconsistencies ++;
+			//fix the inconsistency
+			array[Integer.parseInt(barcode)] = expected;
+			violation(barcode, expected, actual);
+		}
+				
+		//return the expected value from the hash
 		return super.barcode(barcode);
 	}
 

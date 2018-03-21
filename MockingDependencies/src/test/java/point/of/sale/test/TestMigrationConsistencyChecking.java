@@ -57,8 +57,14 @@ public class TestMigrationConsistencyChecking {
 		assertEquals(0, arrayStorage.checkConsistency());
 		
 		//Shadow Reads for Validation (read will access both old and new)
-		// old will provide response
-		// consistency check that old == new
+		// change the hash only
+		arrayStorage.testOnlyPutHashOnly("123", "Milk 4.99");
+		//The end user still gets the correct result
+		assertEquals("Milk 4.99", arrayStorage.barcode("123"));
+		//we note a read inconsistency
+		assertEquals(1, arrayStorage.getReadInconsistencies());
+		//we ensure that that inconsistency is fixed
+		assertEquals(0, arrayStorage.checkConsistency());
 		
 		//read and write from new datastore
 		
@@ -67,7 +73,7 @@ public class TestMigrationConsistencyChecking {
 		//simple test of storage
 		sale.scan("123");	
 		verify(mockDisplay).showLine("123");
-		verify(mockDisplay).showLine("Milk 3.99");
+		verify(mockDisplay).showLine("Milk 4.99");
 				
 	}
 
