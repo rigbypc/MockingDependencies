@@ -9,7 +9,7 @@ import org.junit.Test;
 
 public class Log4jExamples {
 
-	private static Logger logger = LogManager.getRootLogger();
+	private static Logger logger = LogManager.getLogger();
 	
 	@Test
 	public void test() {
