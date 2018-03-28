@@ -2,7 +2,9 @@
 <Configuration status="warn" name="Sale" packages="">
 	<Appenders>
     	<Console name="STDIO" target="SYSTEM_OUT">
-    		<PatternLayout pattern="%msg - [%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} %n"/>
+    		<PatternLayout>
+	        	<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+	      	</PatternLayout>
     	</Console>
     	<File name="Analytics" fileName="logs/Analytics.log">
 	      	<PatternLayout>
@@ -14,8 +16,11 @@
 		<Root level="all">
 	      <AppenderRef ref="STDIO"/>
 	    </Root>
-	    <Logger name = "analytics" level = "all" additivity = "false">
+	    <Logger name = "analytics" level = "error" additivity = "false">
 	    	<AppenderRef ref= "Analytics"/>
+	    </Logger>
+	    <Logger name = "analytics.console" level = "info" additivity = "true">
+	    	<AppenderRef ref= "STDIO"/>
 	    </Logger>
 	</Loggers>
 </Configuration>
