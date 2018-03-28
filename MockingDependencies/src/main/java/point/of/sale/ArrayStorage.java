@@ -1,7 +1,12 @@
 package point.of.sale;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class ArrayStorage extends HashStorage {
 
+	private static Logger migrationLog = LogManager.getLogger("migration");
+	
 	int readInconsistencies = 0;
 	public int getReadInconsistencies() {
 		return readInconsistencies;
@@ -68,7 +73,7 @@ public class ArrayStorage extends HashStorage {
 			String actual = array[Integer.parseInt(barcode)];
 			
 			if(! expected.equals(actual)) {
-				readInconsistencies ++;
+				migrationLog.error("Read Inconsistency");
 				//fix the inconsistency
 				array[Integer.parseInt(barcode)] = expected;
 				violation(barcode, expected, actual);
@@ -106,6 +111,8 @@ public class ArrayStorage extends HashStorage {
 			String expected = hashMap.get(barcode);
 			String actual = array[Integer.parseInt(barcode)];
 			if (!expected.equals(actual)) {
+				
+				migrationLog.error("Inconsistency in full check");
 				//fix the inconsistency
 				array[Integer.parseInt(barcode)] = expected;
 				
@@ -121,7 +128,7 @@ public class ArrayStorage extends HashStorage {
 			return;
 		}
 
-		System.out.println("Consistency Violation!\n" + 
+		migrationLog.info("Inconsistency:" + 
 				"barcode = " + barcode +
 				"\n\t expected = " + expected
 				+ "\n\t actual = " + actual);
