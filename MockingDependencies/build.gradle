@@ -31,4 +31,7 @@ dependencies {
     compile group: 'com.google.inject', name: 'guice', version: '4.0'
     compile group: 'com.google.guava', name: 'guava', version: '23.5-jre'
     compile group: 'commons-codec', name: 'commons-codec', version: '1.5'
+    //compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.+'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.+'
+  	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.+'
 }
