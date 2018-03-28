@@ -18,6 +18,8 @@ public class ArrayStorage extends HashStorage {
 		if (SaleToggles.isEnabledArray) {
 			array = new String[size];
 		}
+		migrationLog.info("isEnabledArray = " + SaleToggles.isEnabledArray);
+		migrationLog.info("isEnabledHash = " + SaleToggles.isEnabledHash);
 	}
 	
 	public void forklift() {

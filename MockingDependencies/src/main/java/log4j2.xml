@@ -13,11 +13,11 @@
     	</File>
 	</Appenders>
 	<Loggers>
-		<Logger name = "migration" level = "error" additivity = "false">
+		<Root level="all">
+	      <AppenderRef ref="STDIO"/>
+	    </Root>
+		<Logger name = "migration" level = "info" additivity = "true">
 	    	<AppenderRef ref= "Migration"/>
-	    </Logger>
-	    <Logger name = "migration.console" additivity = "true">
-	    	<AppenderRef ref= "STDIO"/>
 	    </Logger>
 	</Loggers>
 	
