@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 public class ArrayStorage extends HashStorage {
 
-	private static Logger migrationLog = LogManager.getLogger("migration");
+	private static Logger migrationLog = LogManager.getLogger();
 	
 	int readInconsistencies = 0;
 	public int getReadInconsistencies() {
@@ -20,6 +20,7 @@ public class ArrayStorage extends HashStorage {
 		}
 		migrationLog.info("isEnabledArray = " + SaleToggles.isEnabledArray);
 		migrationLog.info("isEnabledHash = " + SaleToggles.isEnabledHash);
+		migrationLog.info("isUnderTest = " + SaleToggles.isUnderTest);
 	}
 	
 	public void forklift() {
@@ -41,24 +42,33 @@ public class ArrayStorage extends HashStorage {
 
 	//need this for testing to insert inconsistencies
 	public void testOnlyPutHashOnly(String barcode, String item) {
+		
+		migrationLog.info("Write");
+		
 		if (!SaleToggles.isUnderTest) {
 			return;
 		}
 		
 		if (SaleToggles.isEnabledHash) {
+			migrationLog.info("Hash Write");
 			super.put(barcode, item);
 		}
 	}
 	
 	@Override
 	public void put(String barcode, String item) {
+		
+		migrationLog.info("Write");
+		
 		if (SaleToggles.isEnabledArray) {
 			//shadow write
 			array[Integer.parseInt(barcode)] = item;
+			migrationLog.info("Array Write");
 		}
 		
 		if (SaleToggles.isEnabledHash) {
 			//actual write to old data store
+			migrationLog.info("Hash Write");
 			super.put(barcode, item);
 		}
 		
@@ -68,6 +78,8 @@ public class ArrayStorage extends HashStorage {
 
 	@Override
 	public String barcode(String barcode) {
+		
+		migrationLog.info("Read");
 		
 		if (SaleToggles.isEnabledArray & SaleToggles.isEnabledHash) {
 			String expected = hashMap.get(barcode);
@@ -84,10 +96,12 @@ public class ArrayStorage extends HashStorage {
 				
 		if (SaleToggles.isEnabledHash) {
 			//return the expected value from the hash
+			migrationLog.info("Hash Read");
 			return super.barcode(barcode);
 		}
 		
 		if (SaleToggles.isEnabledArray) {
+			migrationLog.info("Array Read");
 			return array[Integer.parseInt(barcode)];
 		}
 		
@@ -108,13 +122,15 @@ public class ArrayStorage extends HashStorage {
 			return 0;
 		}
 		
+		migrationLog.info("Consistency Check");
+		
 		int inconsistencies = 0;
 		for (String barcode : hashMap.keySet()) {
 			String expected = hashMap.get(barcode);
 			String actual = array[Integer.parseInt(barcode)];
 			if (!expected.equals(actual)) {
 				
-				migrationLog.error("Inconsistency in full check");
+				migrationLog.error("Data Inconsistency");
 				//fix the inconsistency
 				array[Integer.parseInt(barcode)] = expected;
 				
@@ -130,7 +146,7 @@ public class ArrayStorage extends HashStorage {
 			return;
 		}
 
-		migrationLog.info("Inconsistency:" + 
+		migrationLog.debug("Inconsistency:" + 
 				"barcode = " + barcode +
 				"\n\t expected = " + expected
 				+ "\n\t actual = " + actual);
